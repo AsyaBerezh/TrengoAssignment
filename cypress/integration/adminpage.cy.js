@@ -21,13 +21,11 @@ describe('Admin page', () =>{
     beforeEach(() =>{
         navigate();
         login('asya.berezhnaya@gmail.com','5jC4xgj.!KchVrh');
-        cy.wait(4000);
         goToSettings();
+        cy.wait(4000);
     })
 
     it("Create New Team", () =>{
-        cy.wait(3000);
-        collapseOption(0);
         goToTeams();
         addNewTeam();
         writeTeamName();
@@ -38,7 +36,6 @@ describe('Admin page', () =>{
         checkInfoMessage();
     })
     it("Create Custom Channel" , () =>{
-        cy.wait(5000);
         collapseOption(1);
         settings.getChannelsCustom().click();
         settings.getAddCustomChannelsButton().click();
@@ -46,15 +43,14 @@ describe('Admin page', () =>{
         settings.getInfoMessage().should('be.visible');
     })
     it("Create custom chat message", () =>{
-        cy.wait(4000);
         collapseOption(1);
         settings.getChannelsCustom().click();
         settings.getAllCustomChannels().last().click();
         cy.get('[class="box-body flow-root"]').scrollIntoView();
         settings.getChannelIdentifier().invoke('text').should('not.be.empty').should('not.be.undefined').then((channelIdentifier) => {
-			cy.log('channelIdentifier '+channelIdentifier);
+			      // cy.log('channelIdentifier '+channelIdentifier);
             let customIdetifier = 'custom-' + channelIdentifier.slice(0,13);
-            cy.log('customIdetifier '+ customIdetifier);
+            // cy.log('customIdetifier '+ customIdetifier);
             
             cy.request({
                 method: 'POST',
@@ -70,9 +66,9 @@ describe('Admin page', () =>{
                     channel: channelIdentifier
                   })
             }).then((response) => {
-                expect(response.status).to.eq(200);
-                expect(response).to.have.property('headers');
-              });
-		});
+            expect(response.status).to.eq(200);
+            expect(response).to.have.property('headers');
+            });
+		  });
     });
 });
